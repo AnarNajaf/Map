@@ -33,7 +33,7 @@ L.control.sensorBtn({ position: "topright" }).addTo(map);
 const MotorBtn = createMapButton({
   className: "motor-btn",
   imgSrc: "../images/motor.png",
-  onClick: () => alert("Motor button clicked!"),
+  onClick: Motor,
 });
 L.control.motorBtn = MotorBtn;
 L.control.motorBtn({ position: "topright" }).addTo(map);

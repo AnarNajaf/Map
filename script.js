@@ -1,4 +1,4 @@
-var map = L.map("map").setView([51.505, -0.09], 13);
+var map = L.map("map").setView([40.505, 49], 13);
 // L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 //   attribution:
 //     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -23,6 +23,14 @@ const installationDate = document.getElementById("installationDate");
 const useTodayDate = document.getElementById("useTodayDate");
 const submitBtn = document.getElementById("submitBtn");
 
+//Motor
+const motorCard = document.getElementById("motorCard");
+const motorID = document.getElementById("motorId");
+const motorType = document.getElementById("motorType");
+const motorLat = document.getElementById("motorLat");
+const motorLng = document.getElementById("motorLng");
+const motorSubmitBtn = document.getElementById("MotorSubmitBtn");
+
 document.addEventListener("keydown", function (e) {
   if (e.key === "Escape") {
     resetToolSelection();
@@ -39,16 +47,18 @@ L.tileLayer(
 let userMarker = null;
 let selectedTool = null;
 var isPlacingSensor = false;
+var isPlacingMotor = false;
 
 const sensorIcon = L.icon({
   iconUrl: "../images/sensor.png",
   iconSize: [32, 32],
   iconAnchor: [16, 16],
 });
-
-
-
-
+const motorIcon = L.icon({
+  iconUrl: "../images/motor.png",
+  iconSize: [32, 32],
+  iconAnchor: [16, 16],
+});
 function resetToolSelection() {
   selectedTool = null;
   colorMode = false;
@@ -88,7 +98,14 @@ var OpenSensorInformationForm = (lat, lng) => {
     sensorCard.style.display = "none";
   };
 };
-
+var OpenMotorInformationForm = (lat, lng) => {
+  motorCard.style.display = "block";
+  motorLat.value = lat;
+  motorLng.value = lng;
+  motorSubmitBtn.onclick = () => {
+    motorCard.style.display = "none";
+  };
+};
 function Sensor() {
   if (!isPlacingSensor) {
     isPlacingSensor = true;
@@ -107,6 +124,26 @@ function Sensor() {
   } else {
     map.getContainer().style.cursor = "";
     isPlacingSensor = false;
+  }
+}
+function Motor() {
+  if (!isPlacingMotor) {
+    isPlacingMotor = true;
+    map.getContainer().style.cursor = "url('../images/motor.png') 20 20, auto";
+
+    map.on("click", function (e) {
+      if (!isPlacingMotor) return;
+      L.marker([e.latlng.lat, e.latlng.lng], { icon: motorIcon })
+        .addTo(map)
+        .bindPopup("Motor placed!")
+        .openPopup();
+      OpenMotorInformationForm(e.latlng.lat, e.latlng.lng);
+      map.getContainer().style.cursor = "";
+      isPlacingMotor = false;
+    });
+  } else {
+    map.getContainer().style.cursor = "";
+    isPlacingMotor = false;
   }
 }
 
