@@ -43,6 +43,33 @@ L.tileLayer(
     attribution: "Tiles © Esri",
   }
 ).addTo(map);
+async function loadFarmsFromDB() {
+    try {
+        const response = await fetch("http://localhost:5212/api/farm");
+        const farms = await response.json();
+
+        farms.forEach(farm => {
+            if (!farm.polygon || farm.polygon.length === 0) return;
+
+            // Convert [[lat, lng], [lat, lng]] to Leaflet LatLng objects
+            const latlngs = farm.polygon.map(p => L.latLng(p[0], p[1]));
+
+            // Draw polygon
+            const polygon = L.polygon(latlngs, {
+                color: farm.color || "green",
+                weight: 2
+            }).addTo(map);
+
+            polygon.bindPopup(`<b>${farm.name}</b><br>ID: ${farm.id}`);
+        });
+
+        console.log("Loaded farms:", farms);
+    } catch (err) {
+        console.error("Error loading farms:", err);
+    }
+}
+
+loadFarmsFromDB();
 
 let userMarker = null;
 let selectedTool = null;
