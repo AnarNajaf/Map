@@ -52,7 +52,7 @@
       <button type="button" id="submitBtn">Submit</button>
     </form>
 
-    <form action="POST" class="info_card" id="motorCard">
+    <form action="POST" class="info_card" id="motorCard" novalidate>
       <span
         class="close-btn"
         onclick="document.getElementById('motorCard').style.display='none'"
@@ -61,20 +61,18 @@
       <h3>Motor Information</h3>
 
       <label for="motorId">Motor ID:</label>
-      <input type="text" id="motorId" name="motorId" />
+      <input type="text" id="motorId" name="motorId" required/>
 
       <label for="motorType">Sensor Type:</label>
       <select id="motorType" name="motorType">
-        <option value="">Select Sensor Type</option>
+        <option value="" disabled selected>Select Sensor Type</option>
         <option value="7in1">7 in 1</option>
         <option value="5in1">5 in 1</option>
         <option value="3in1">3 in 1</option>
       </select>
-
-      <label>Latitude:</label>
+      <label for="motorLat">Latitude:</label>
       <input type="text" id="motorLat" name="motorLat" readonly />
-
-      <label>Longitude:</label>
+      <label for="motorLng">Longitude:</label>
       <input type="text" id="motorLng" name="motorLng" readonly />
 
       <label>

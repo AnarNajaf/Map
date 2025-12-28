@@ -136,6 +136,8 @@ var OpenSensorInformationForm = (latt, lngg) => {
 
     await saveSensor(sensorData);
     sensorCard.style.display = "none";
+    hideMapMessage();
+
   };
 };
 
@@ -201,7 +203,9 @@ map.on("click", function (e) {
 
     OpenSensorInformationForm(e.latlng.lat, e.latlng.lng);
     // no resetToolSelection here, so form stays open
+    hideMapMessage();
     return;
+    
   }
 
   if (isPlacingMotor) {
@@ -212,6 +216,8 @@ map.on("click", function (e) {
 
     OpenMotorInformationForm(e.latlng.lat, e.latlng.lng);
     // no resetToolSelection here
+    hideMapMessage();
+
     return;
   }
 });
