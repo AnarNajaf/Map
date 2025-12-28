@@ -15,15 +15,17 @@ document.getElementById("useTodayDate").addEventListener("change", function () {
 });
 
 // Motor form
-document.getElementById("useTodayDateMotor").addEventListener("change", function () {
-  const dateInput = document.getElementById("installationDateMotor");
-  if (this.checked) {
-    const today = new Date().toISOString().split("T")[0];
-    dateInput.value = today;
-  } else {
-    dateInput.value = "";
-  }
-});
+document
+  .getElementById("useTodayDateMotor")
+  .addEventListener("change", function () {
+    const dateInput = document.getElementById("installationDateMotor");
+    if (this.checked) {
+      const today = new Date().toISOString().split("T")[0];
+      dateInput.value = today;
+    } else {
+      dateInput.value = "";
+    }
+  });
 
 //Sensor UI
 const sensorCard = document.getElementById("sensorCard");
@@ -42,6 +44,8 @@ const motorType = document.getElementById("motorType");
 const motorLat = document.getElementById("motorLat");
 const motorLng = document.getElementById("motorLng");
 const motorSubmitBtn = document.getElementById("MotorSubmitBtn");
+const installationDateMotor = document.getElementById("installationDateMotor");
+const useTodayDateMotor = document.getElementById("useTodayDateMotor");
 
 document.addEventListener("keydown", function (e) {
   if (e.key === "Escape") {
@@ -63,7 +67,6 @@ let userMarker = null;
 let selectedTool = null;
 var isPlacingSensor = false;
 var isPlacingMotor = false;
-
 
 function resetToolSelection() {
   selectedTool = null;
@@ -102,7 +105,7 @@ function Location() {
   }
 }
 
-//Fundamental Functions 
+//Fundamental Functions
 //Show Map Message
 function showMapMessage(message) {
   const messageDiv = document.getElementById("mapMessage");
@@ -115,7 +118,6 @@ function hideMapMessage() {
   messageDiv.classList.add("hidden");
 }
 
-
 var OpenSensorInformationForm = (latt, lngg) => {
   sensorCard.style.display = "block";
   sensorLat.value = latt;
@@ -124,12 +126,12 @@ var OpenSensorInformationForm = (latt, lngg) => {
     let dateValue = installationDate.value; // "2025-12-04"
     const isoDate = new Date(dateValue + "T00:00:00").toISOString();
     const sensorData = {
-        sensorId: sensorID.value,
-        type: sensorType.value,
-        lat: latt,
-        lng: lngg,
-        installationDate: isoDate,
-        farmId: selectedFarmId,
+      sensorId: sensorID.value,
+      type: sensorType.value,
+      lat: latt,
+      lng: lngg,
+      installationDate: isoDate,
+      farmId: selectedFarmId,
     };
 
     console.log("Sending sensor:", sensorData);
@@ -137,37 +139,42 @@ var OpenSensorInformationForm = (latt, lngg) => {
     await saveSensor(sensorData);
     sensorCard.style.display = "none";
     hideMapMessage();
-
+    location.reload();
   };
 };
 
 async function saveSensor(sensorData) {
-    try {
-        const response = await fetch("http://localhost:5212/api/sensor", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(sensorData)
-        });
+  try {
+    const response = await fetch("http://localhost:5212/api/sensor", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(sensorData),
+    });
 
-        if (!response.ok) throw new Error("Failed to save");
+    if (!response.ok) throw new Error("Failed to save");
 
-        alert("Sensor saved successfully!");
-    } catch (err) {
-        console.error("Error saving sensor:", err);
-        alert("Error saving sensor");
-    }
+    alert("Sensor saved successfully!");
+  } catch (err) {
+    console.error("Error saving sensor:", err);
+    alert("Error saving sensor");
+  }
 }
 
 var OpenMotorInformationForm = (latt, lngg) => {
   motorCard.style.display = "block";
   motorLat.value = latt;
   motorLng.value = lngg;
-  motorSubmitBtn.onclick = async() => {
+
+  motorSubmitBtn.onclick = async () => {
+    let dateValue = installationDateMotor.value; // "2025-12-04"
+    const isoDate = new Date(dateValue + "T00:00:00").toISOString();
+
     const motorData = {
       motorId: motorID.value,
       type: motorType.value,
       lat: latt,
       lng: lngg,
+      installationDate: isoDate,
       farmId: selectedFarmId,
     };
     console.log("Sending motor:", motorData);
@@ -175,23 +182,24 @@ var OpenMotorInformationForm = (latt, lngg) => {
     await saveMotor(motorData);
 
     motorCard.style.display = "none";
+    hideMapMessage();
+    location.reload();
   };
 };
 async function saveMotor(motorData) {
-    try {
-        const response = await fetch("http://localhost:5212/api/motor", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(motorData)
-        });
-        if (!response.ok) throw new Error("Failed to save");
+  try {
+    const response = await fetch("http://localhost:5212/api/motor", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(motorData),
+    });
+    if (!response.ok) throw new Error("Failed to save");
 
-        alert("Motor saved successfully!");
-    }
-    catch (err) {
-        console.error("Error saving motor:", err);
-        alert("Error saving motor");
-    }
+    alert("Motor saved successfully!");
+  } catch (err) {
+    console.error("Error saving motor:", err);
+    alert("Error saving motor");
+  }
 }
 
 map.on("click", function (e) {
@@ -205,7 +213,6 @@ map.on("click", function (e) {
     // no resetToolSelection here, so form stays open
     hideMapMessage();
     return;
-    
   }
 
   if (isPlacingMotor) {
@@ -224,7 +231,10 @@ map.on("click", function (e) {
 
 function Sensor() {
   // only prevent multiple forms open at the same time
-  if (sensorCard.style.display === "block" || motorCard.style.display === "block") {
+  if (
+    sensorCard.style.display === "block" ||
+    motorCard.style.display === "block"
+  ) {
     alert("Please finish or close the current form first.");
     return;
   }
@@ -235,7 +245,10 @@ function Sensor() {
 }
 
 function Motor() {
-  if (sensorCard.style.display === "block" || motorCard.style.display === "block") {
+  if (
+    sensorCard.style.display === "block" ||
+    motorCard.style.display === "block"
+  ) {
     alert("Please finish or close the current form first.");
     return;
   }
