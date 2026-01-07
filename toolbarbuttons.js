@@ -24,7 +24,8 @@ L.control.locateBtn({ position: "bottomright" }).addTo(map);
 
 const SensorBtn = createMapButton({
   className: "sensor-btn",
-  imgSrc: "../images/sensor_left.png",
+  imgSrc:
+    "https://anarnajaf.github.io/Map---Leaflet-JS---WEB-API/images/sensor_left.png",
   onClick: Sensor,
 });
 L.control.sensorBtn = SensorBtn;
