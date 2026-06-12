@@ -34,7 +34,7 @@ map.on("draw:deleted", async function (event) {
     }
 
     try {
-      await fetch(`http://localhost:5212/api/farm/${layer.farmId}`, {
+      await fetch(`${API_BASE_URL}/api/farm/${layer.farmId}`, {
         method: "DELETE",
         headers: authHeaders(),
       });
@@ -66,7 +66,7 @@ map.on(L.Draw.Event.CREATED, async function (event) {
     };
 
     try {
-      const response = await fetch("http://localhost:5212/api/farm", {
+      const response = await fetch(`${API_BASE_URL}/api/farm`, {
         method: "POST",
         headers: authHeaders(),
         body: JSON.stringify(farmData),

@@ -520,7 +520,7 @@ function buildMotorPopup(motor) {
 }
 function addMotorMarker(motor) {
   // fetch schedule and store on motor object
-  fetch(`http://localhost:5212/api/schedule/motor/${motor.id}`, {
+  fetch(`${API_BASE_URL}/api/schedule/motor/${motor.id}`, {
     headers: authHeaders(),
   })
     .then((res) => (res.ok ? res.json() : null))
@@ -552,7 +552,7 @@ function updateMotorMarkerLocally(motorId, patch) {
 }
 async function loadFarmsFromDB() {
   try {
-    const response = await fetch("http://localhost:5212/api/farm/my", {
+    const response = await fetch(`${API_BASE_URL}/api/farm/my`, {
       headers: authHeaders(),
     });
 
@@ -605,7 +605,7 @@ async function loadSensorsFromDB() {
   sensorMarkers = [];
 
   try {
-    const response = await fetch("http://localhost:5212/api/sensor", {
+    const response = await fetch(`${API_BASE_URL}/api/sensor`, {
       headers: authHeaders(),
     });
 
@@ -634,7 +634,7 @@ async function loadMotorsFromDB() {
   motorMarkers = [];
 
   try {
-    const response = await fetch("http://localhost:5212/api/motor", {
+    const response = await fetch(`${API_BASE_URL}/api/motor`, {
       headers: authHeaders(),
     });
 
@@ -757,7 +757,7 @@ async function deleteSensor(sensorId) {
 async function performDeleteSensor(sensorId) {
   try {
     const response = await fetch(
-      `http://localhost:5212/api/sensor/${sensorId}`,
+      `${API_BASE_URL}/api/sensor/${sensorId}`,
       {
         method: "DELETE",
         headers: authHeaders(),
@@ -791,7 +791,7 @@ async function deleteMotor(motorId) {
 
 async function performDeleteMotor(motorId) {
   try {
-    const response = await fetch(`http://localhost:5212/api/motor/${motorId}`, {
+    const response = await fetch(`${API_BASE_URL}/api/motor/${motorId}`, {
       method: "DELETE",
       headers: authHeaders(),
     });
@@ -905,7 +905,7 @@ async function editMotor(motorId) {
 }
 async function updateMotor(motorId, motorData) {
   try {
-    const response = await fetch(`http://localhost:5212/api/motor/${motorId}`, {
+    const response = await fetch(`${API_BASE_URL}/api/motor/${motorId}`, {
       method: "PUT",
       headers: authHeaders(),
       body: JSON.stringify(motorData),
@@ -927,7 +927,7 @@ async function updateMotor(motorId, motorData) {
 async function updateSensor(sensorId, sensorData) {
   try {
     const response = await fetch(
-      `http://localhost:5212/api/sensor/${sensorId}`,
+      `${API_BASE_URL}/api/sensor/${sensorId}`,
       {
         method: "PUT",
         headers: authHeaders(),
@@ -951,7 +951,7 @@ async function updateSensor(sensorId, sensorData) {
 function toggleSensor(sensorId, isActive, checkbox) {
   checkbox.disabled = true;
 
-  fetch(`http://localhost:5212/api/sensor/${sensorId}/status`, {
+  fetch(`${API_BASE_URL}/api/sensor/${sensorId}/status`, {
     method: "PATCH",
     headers: authHeaders(),
     body: JSON.stringify({ isActive }),
@@ -993,7 +993,7 @@ async function toggleMotor(motorId, isActive, checkbox) {
         }
 
         const response = await fetch(
-          `http://localhost:5212/api/motor/${motorId}/status`,
+          `${API_BASE_URL}/api/motor/${motorId}/status`,
           {
             method: "PATCH",
             headers: authHeaders(),
@@ -1223,7 +1223,7 @@ async function saveAutoConfig(motorId) {
   if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Saving...'; }
 
   try {
-    const res = await fetch(`http://localhost:5212/api/motor/${motorId}/auto-config`, {
+    const res = await fetch(`${API_BASE_URL}/api/motor/${motorId}/auto-config`, {
       method: 'PATCH',
       headers: authHeaders(),
       body: JSON.stringify({
@@ -1266,7 +1266,7 @@ async function saveAutoConfig(motorId) {
 
 async function setMotorMode(motorId, mode) {
   try {
-    const res = await fetch(`http://localhost:5212/api/motor/${motorId}/mode`, {
+    const res = await fetch(`${API_BASE_URL}/api/motor/${motorId}/mode`, {
       method: "PATCH",
       headers: authHeaders(),
       body: JSON.stringify({ mode }),
@@ -1279,7 +1279,7 @@ async function setMotorMode(motorId, mode) {
 
       // Entering scheduled/auto mode: turn the motor off so the automation owns it
       if (mode !== "manual" && motorObj.data.isActive) {
-        await fetch(`http://localhost:5212/api/motor/${motorId}/status`, {
+        await fetch(`${API_BASE_URL}/api/motor/${motorId}/status`, {
           method: "PATCH",
           headers: authHeaders(),
           body: JSON.stringify({ isActive: false }),

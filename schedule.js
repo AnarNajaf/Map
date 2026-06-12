@@ -90,7 +90,7 @@ async function loadSchedules() {
     let schedule = null;
     try {
       const res = await fetch(
-        `http://localhost:5212/api/schedule/motor/${motor.id}`,
+        `${API_BASE_URL}/api/schedule/motor/${motor.id}`,
         { headers: authHeaders() }
       );
       if (res.ok) schedule = await res.json();
@@ -206,7 +206,7 @@ function renderAutoSidebar() {
 
 async function pauseAutoMode(motorId) {
   try {
-    const res = await fetch(`http://localhost:5212/api/motor/${motorId}/mode`, {
+    const res = await fetch(`${API_BASE_URL}/api/motor/${motorId}/mode`, {
       method: "PATCH",
       headers: authHeaders(),
       body: JSON.stringify({ mode: "manual" }),
@@ -232,7 +232,7 @@ function editAutoConfig(motorId) {
 async function toggleSchedule(scheduleId, currentlyEnabled) {
   try {
     const res = await fetch(
-      `http://localhost:5212/api/schedule/${scheduleId}/toggle`,
+      `${API_BASE_URL}/api/schedule/${scheduleId}/toggle`,
       { method: "PATCH", headers: authHeaders() }
     );
     if (!res.ok) throw new Error();
@@ -255,7 +255,7 @@ async function toggleSchedule(scheduleId, currentlyEnabled) {
 async function deleteSchedule(scheduleId) {
   try {
     const res = await fetch(
-      `http://localhost:5212/api/schedule/${scheduleId}`,
+      `${API_BASE_URL}/api/schedule/${scheduleId}`,
       { method: "DELETE", headers: authHeaders() }
     );
     if (!res.ok) throw new Error();
@@ -406,7 +406,7 @@ function openSchedulePanel(motorId) {
   resetDaysSelection();
 
   // Pre-fill if a schedule already exists for this motor
-  fetch(`http://localhost:5212/api/schedule/motor/${motorId}`, {
+  fetch(`${API_BASE_URL}/api/schedule/motor/${motorId}`, {
     headers: authHeaders(),
   })
     .then((res) => (res.ok ? res.json() : null))
@@ -481,7 +481,7 @@ function openSchedulePanel(motorId) {
     btn.textContent = "Saving...";
 
     try {
-      const res = await fetch("http://localhost:5212/api/schedule", {
+      const res = await fetch(`${API_BASE_URL}/api/schedule`, {
         method: "POST",
         headers: authHeaders(),
         body: JSON.stringify(payload),
@@ -491,7 +491,7 @@ function openSchedulePanel(motorId) {
 
       // Turn motor OFF — schedule owns it now
       await fetch(
-        `http://localhost:5212/api/motor/${_scheduleMotorId}/status`,
+        `${API_BASE_URL}/api/motor/${_scheduleMotorId}/status`,
         {
           method: "PATCH",
           headers: authHeaders(),

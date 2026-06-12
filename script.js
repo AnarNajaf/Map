@@ -285,7 +285,7 @@ async function saveSensor(sensorData) {
 
     sensorData.deviceCode = cleanCode;
 
-    const response = await fetch("http://localhost:5212/api/sensor", {
+    const response = await fetch(`${API_BASE_URL}/api/sensor`, {
       method: "POST",
       headers: authHeaders(),
       body: JSON.stringify(sensorData),
@@ -361,7 +361,7 @@ async function saveMotor(motorData) {
 
     motorData.deviceCode = cleanCode;
 
-    const response = await fetch("http://localhost:5212/api/motor", {
+    const response = await fetch(`${API_BASE_URL}/api/motor`, {
       method: "POST",
       headers: authHeaders(),
       body: JSON.stringify(motorData),
@@ -481,7 +481,7 @@ function colorPolygon(latlng) {
       colored = true;
 
       if (layer.farmId) {
-        fetch(`http://localhost:5212/api/farm/${layer.farmId}/color`, {
+        fetch(`${API_BASE_URL}/api/farm/${layer.farmId}/color`, {
           method: "PATCH",
           headers: authHeaders(),
           body: JSON.stringify({ color: selectedColor }),

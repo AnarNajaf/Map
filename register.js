@@ -2,7 +2,6 @@ const registerForm = document.getElementById("registerForm");
 const registerMessage = document.getElementById("registerMessage");
 const sendOtpBtn = document.getElementById("sendOtpBtn");
 
-const AUTH_BASE_URL = "http://localhost:5159";
 let originalOTP = null;
 
 const loadingIndicator = document.getElementById("loadingIndicator");

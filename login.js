@@ -1,8 +1,6 @@
 const loginForm = document.getElementById("loginForm");
 const loginMessage = document.getElementById("loginMessage");
 
-const AUTH_BASE_URL = "http://localhost:5159";
-
 function showLoginMessage(message, type = "error") {
   loginMessage.textContent = message;
   loginMessage.className = `message ${type}`;
