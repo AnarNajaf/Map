@@ -22,15 +22,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-console.log("🔥 Firebase file loaded");
-
 window.firebaseDb = db;
 window.firestoreDoc = doc;
 window.firestoreOnSnapshot = onSnapshot;
 window.firestoreGetDoc = getDoc;
 window.firestoreUpdateDoc = updateDoc;
-
-console.log("🔥 firestoreGetDoc set:", window.firestoreGetDoc);
-console.log("🔥 firestoreUpdateDoc set:", window.firestoreUpdateDoc);
 
 export { db };
